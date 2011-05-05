@@ -9,12 +9,18 @@
 		<script type="text/javascript" src="js/jquery/jquery-1.5.2.js"></script>
 		<script type="text/javascript" src="js/jquery/jquery-ui-1.8.8.custom.min.js"></script>
 		<script type="text/javascript" src="js/jquery/jquery.jqGrid.min.js"></script>
-		<script type="text/javascript" src="js/cocoafish/cocoafish-1.0.0.min.js"></script>
+		<script type="text/javascript" src="http://storage.cocoafish.com/js/cocoafish-1.0.0.min.js"></script>
 		<script type="text/javascript" src="js/utils.js"></script>
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false" ></script>
 	</head>
 	<body onload="getPlaces()" >
 		<div style="width:800px; margin:0 auto">
+		  <table width=800>
+		    <tr>
+		      <td align="left"><a href="#" onClick="window.location.reload()">Reload</a></td>
+		      <td align="right"><a href="#" onclick="logoutUser(); return false;">Logout</a></td>
+		    </tr>
+		  </table>
 			<div align="center" id="map_canvas" style="width:100%; height:400px" class="ui-widget ui-widget-content"></div>
 			<div style="height:30px"></div>
 			<div>

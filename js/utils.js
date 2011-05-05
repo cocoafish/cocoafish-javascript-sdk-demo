@@ -10,6 +10,14 @@ function loginUser(userLogin, passwd) {
 	});
 }
 
+function logoutUser() {
+	sdk.logoutUser(function(data) {
+		if(data && data.meta && data.meta.code == 200) {
+			window.location = 'login.html';
+		}
+	});
+}
+
 function loadSignUp() {
 	$.ajax({
 		url: 'signup.html',
@@ -91,7 +99,7 @@ function initializeMap(places) {
       panControl:true
     };
     var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    map.panToBounds(bounds);
+		map.fitBounds(bounds);
     
     var infowindow = new google.maps.InfoWindow({
     		content: 'Hello world' 
