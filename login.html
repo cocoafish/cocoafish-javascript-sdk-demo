@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>User Login</title>
+		<script type="text/javascript" src="js/jquery/jquery-1.5.2.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery-ui-1.8.8.custom.min.js"></script>
+		<script type="text/javascript" src="js/cocoafish/cocoafish-1.0.0.min.js"></script>
+		<script type="text/javascript" src="js/utils.js"></script>
+		<link type="text/css" href="css/cupertino/jquery-ui-1.8.8.custom.css" rel="Stylesheet" />
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#loginButton').button({
+						icons: {
+	                			primary: "ui-icon-triangle-1-e",
+	                			secondary: "ui-icon-triangle-1-e"
+	            			}
+				});
+				$('#resetButton').button({
+					icons: {
+                			primary: "ui-icon-triangle-1-e",
+                			secondary: "ui-icon-triangle-1-e"
+            			}
+				});
+				$('#loginButton').click(function() {
+					var userName = $.trim($('#userName').val());
+					var passwd = $('#password').val();
+					if(!userName || !passwd) {
+						$('#errorMsg').show();
+					} else {
+						$('#errorMsg').hide();
+						loginUser(userName, passwd);
+					}
+				});
+				
+			});
+		</script>
+		
+		<style type="text/css">
+			body {
+				font-size:12px;
+			}
+			
+			.loginFormArea {
+				width:400px;
+				padding:15px;
+			}
+			.loginInput {
+				width: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<table align="center">
+			<tr>
+				<td>
+					<div id="mainArea" class="loginFormArea ui-widget ui-widget-content ui-corner-all">
+						<table align="center" border="0" cellspacing="0" cellpadding="5">
+							<tr>
+								<td colspan="2">
+									<div id="errorMsg" class="ui-state-error ui-corner-all" style="float:left;display:none">
+										<span class="ui-icon ui-icon-alert" style="float:left"></span>
+										<span class="ui-state-error-text" style="float:left">user name or password cannot be empty</span>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td align="right" >User Name:</td>
+								<td><input id="userName" class="ui-widget ui-corner-all loginInput" value="zhengtao.wang@yahoo.com"/></td>
+							</tr>
+							<tr>
+								<td align="right" >Password:</td>
+								<td><input id="password" type="password" class="ui-widget ui-corner-all loginInput"/></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td nowrap><a id="loginButton" href="javascript:void(0)">Login</a>&nbsp;&nbsp;<a id="resetButton" href="#">Reset</a></td>
+							</tr>
+							<tr>
+								<td>
+									<a onclick="loadSignUp()" href="javascript:void(0)">Sign Up!</a>
+								<td></td>
+							</tr>
+						</table>
+					</div>
+					
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
