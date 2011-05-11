@@ -3,6 +3,7 @@
 var sdk = new CocoafishWithKey('<insert api key here>');
 
 function loginUser(userLogin, passwd) {
+	$('#container').showLoading();
 	sdk.loginUser({login:userLogin, password: passwd}, function(data) {
 		if(data && data.meta && data.meta.code == 200) {
 			window.location = 'places.html';
@@ -11,10 +12,12 @@ function loginUser(userLogin, passwd) {
 }
 
 function loadSignUp() {
+	$('#container').showLoading();
 	$.ajax({
 		url: 'signup.html',
 		success: function(data) {
 			$('#mainArea').html(data);
+			$('#container').hideLoading();
 		}
 	});
 }
@@ -24,6 +27,83 @@ function createUser(email, fName, lName, password, pwd_confirm) {
 		if(data && data.meta && data.meta.code == 200) {
 			window.location = 'places.html';
 		}
+	});
+}
+
+function testAuthUser(callback, errorCallback, loadingArea) {
+	loadingArea.showLoading();
+	sdk.getCurrentUserProfile(function(data) {
+		if(data) {
+			if(data.meta) {
+				var meta = data.meta;
+				if(meta.stat == 'ok' && meta.code == 200) {
+					loadingArea.hideLoading();
+					$('#content').css('visibility', 'visible');
+					callback();
+					return ;
+				}
+			}
+		}
+		loadingArea.hideLoading();
+		errorCallback(callback);
+	});
+}
+
+function showLoginDialog(callback) {
+	$.ajax({
+		url: 'loginDialog.html',
+		dataType: 'html',
+		success: function(data) {
+			var loginDialog = $('<div>');
+			loginDialog.html(data);
+			loginDialog.dialog({
+				autoOpen: false,
+				height: 200,
+				width: 350,
+				modal: true,
+				resizable: false,
+				show: 'slide',
+				hide: 'explode',
+				title: 'Login',
+				closeText: 'hide',
+				dialogClass:'dialogStyle',
+				buttons: {
+					login: function() {
+						dialogLogin(callback);
+					},
+					reset: function() {
+						
+					}
+				}
+			});
+			loginDialog.dialog( "open" );
+		}
+	});
+}
+
+function dialogLogin(callback) {
+	var userName = $.trim($('#userName').val());
+	var passwd = $('#password').val();
+	if(!userName || !passwd) {
+		$('#errorMsg').show();
+	} else {
+		$('#errorMsg').hide();
+		$('.dialogStyle').showLoading();
+		sdk.loginUser({login:userName, password: passwd}, function(data) {
+			if(data && data.meta && data.meta.code == 200) {
+				callback();
+				$('#content').css('visibility', 'visible');
+				$('.dialogStyle').hideLoading();
+				$('.dialogStyle').remove();
+			}
+		});
+	}
+}
+
+function logoutUser() {
+	$('#container').showLoading();
+	sdk.logoutUser(function(data) {
+		window.location = 'login.html';
 	});
 }
 

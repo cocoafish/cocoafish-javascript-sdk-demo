@@ -5,9 +5,11 @@
 		<title>User Login</title>
 		<script type="text/javascript" src="js/jquery/jquery-1.5.2.js"></script>
 		<script type="text/javascript" src="js/jquery/jquery-ui-1.8.8.custom.min.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery.showLoading.js"></script>
 		<script type="text/javascript" src="js/cocoafish/cocoafish-1.0.0.min.js"></script>
 		<script type="text/javascript" src="js/utils.js"></script>
 		<link type="text/css" href="css/cupertino/jquery-ui-1.8.8.custom.css" rel="Stylesheet" />
+		<link type="text/css" href="css/showLoading.css" rel="Stylesheet" />
 		
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -52,6 +54,7 @@
 		</style>
 	</head>
 	<body>
+	<div id="container">
 		<table align="center">
 			<tr>
 				<td>
@@ -78,9 +81,9 @@
 								<td nowrap><a id="loginButton" href="javascript:void(0)">Login</a>&nbsp;&nbsp;<a id="resetButton" href="#">Reset</a></td>
 							</tr>
 							<tr>
-								<td>
+								<td align="right" colspan="2">
 									<a onclick="loadSignUp()" href="javascript:void(0)">Sign Up!</a>
-								<td></td>
+								</td>
 							</tr>
 						</table>
 					</div>
@@ -88,5 +91,6 @@
 				</td>
 			</tr>
 		</table>
+		</div>
 	</body>
 </html>
