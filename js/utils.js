@@ -1,22 +1,29 @@
 // Sign up at http://cocoafish.com and create an app.
 // Insert your Cocoafish app API key here.
-var sdk = new CocoafishWithKey('<insert api key here>');
+//var sdk = new Cocoafish('<insert api key here>');
+var sdk = new Cocoafish('vw1G7wq6KTKd52m76XwjvoiIgxeHxcXG');
+var userId;
 
 function loginUser(userLogin, passwd) {
 	$('#container').showLoading();
-	sdk.loginUser({login:userLogin, password: passwd}, function(data) {
+	sdk.sendRequest('users/login.json', 'POST', {login:userLogin, password: passwd}, false, function(data) {
 		if(data && data.meta && data.meta.code == 200) {
 			window.location = 'places.html';
+		} else {
+			alert(data.meta.message);
+			$('#container').hideLoading();
 		}
 	});
 }
 
 function logoutUser() {
-	sdk.logoutUser(function(data) {
-		if(data && data.meta && data.meta.code == 200) {
-			window.location = 'login.html';
-		}
-	});
+	if(confirm('Are you sure want to logout?')) {
+		sdk.sendRequest('users/logout.json', 'GET', null, false, function(data) {
+			if(data && data.meta && data.meta.code == 200) {
+				window.location = 'login.html';
+			}
+		});
+	}
 }
 
 function loadSignUp() {
@@ -31,20 +38,30 @@ function loadSignUp() {
 }
 
 function createUser(email, fName, lName, password, pwd_confirm) {
-	sdk.createUser({email: email, first_name: fName, last_name: lName, password: password, password_confirmation: pwd_confirm}, function(data) {
+	var userData = {
+			email: email, 
+			first_name: fName, 
+			last_name: lName, 
+			password: password, 
+			password_confirmation: pwd_confirm
+	};
+	sdk.sendRequest('users/create.json', 'POST', userData, false, function(data) {
 		if(data && data.meta && data.meta.code == 200) {
 			window.location = 'places.html';
+		} else {
+			alert(data.meta.message)
 		}
 	});
 }
 
 function testAuthUser(callback, errorCallback, loadingArea) {
 	loadingArea.showLoading();
-	sdk.getCurrentUserProfile(function(data) {
+	sdk.sendRequest('users/show/me.json', 'GET', null, false, function(data) {
 		if(data) {
 			if(data.meta) {
 				var meta = data.meta;
-				if(meta.stat == 'ok' && meta.code == 200) {
+				if(meta.status == 'ok' && meta.code == 200) {
+					userId = data.response.users[0].id;
 					loadingArea.hideLoading();
 					$('#content').css('visibility', 'visible');
 					callback();
@@ -97,12 +114,17 @@ function dialogLogin(callback) {
 	} else {
 		$('#errorMsg').hide();
 		$('.dialogStyle').showLoading();
-		sdk.loginUser({login:userName, password: passwd}, function(data) {
+		
+		sdk.sendRequest('users/login.json', 'POST', {login:userName, password: passwd}, false, function(data) {
 			if(data && data.meta && data.meta.code == 200) {
+				userId = data.response.users[0].id;
 				callback();
 				$('#content').css('visibility', 'visible');
 				$('.dialogStyle').hideLoading();
 				$('.dialogStyle').remove();
+			} else {
+				alert(data.meta.message);
+				$('.dialogStyle').hideLoading();
 			}
 		});
 	}
@@ -110,16 +132,16 @@ function dialogLogin(callback) {
 
 function logoutUser() {
 	$('#container').showLoading();
-	sdk.logoutUser(function(data) {
+	sdk.sendRequest('users/logout.json', 'GET', null, false, function(data) {
 		window.location = 'login.html';
 	});
 }
 
 function getPlaces() {
-	sdk.findPlaces('', function(data) {
+	sdk.sendRequest('places/search.json', 'GET', null, false, function(data) {
 		if(data) {
 			if(data.meta) {
-				if(data.meta.code == '200' && data.meta.stat == 'ok' && data.meta.method == 'searchPlaces') {
+				if(data.meta.code == '200' && data.meta.status == 'ok' && data.meta.method_name == 'searchPlaces') {
 					initializeMap(data.response.places);
 					createPlacesGrid(data.response.places);
 				}
@@ -206,11 +228,13 @@ function checkInFormatter(cellvalue, options, rowObject) {
 
 function checkinPlace(placeId) {
 	  if(placeId) {
-		  sdk.checkinPlaceOrEvent({place_id:placeId}, function(data) {
+		  sdk.sendRequest('checkins/create.json', 'POST', {place_id:placeId}, false, function(data) {
 			  if(data) {
 					if(data.meta) {
-						if(data.meta.code == '200' && data.meta.stat == 'ok' && data.meta.method == 'createCheckin') {
+						if(data.meta.code == '200' && data.meta.status == 'ok' && data.meta.method_name == 'createCheckin') {
 							alert('Check in successful!');
+						} else {
+							alert(data.meta.message);
 						}
 					}
 				}

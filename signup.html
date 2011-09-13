@@ -6,6 +6,13 @@
 			}
 		});
 		
+		$('#backButton').button({
+			icons: {
+				primary: "ui-icon-triangle-1-w",
+				secondary: "ui-icon-triangle-1-w"
+			}
+		});
+		
 		$('#signUpButton').click(function() {
 			var firstName = $.trim($('#firstName').val());
 			var lastName = $.trim($('#lastName').val());
@@ -14,6 +21,10 @@
 			var confirmPasswd = $('#confirm').val();
 			
 			createUser(mail, firstName, lastName, passwd, confirmPasswd);
+		});
+		
+		$('#backButton').click(function() {
+			window.location = 'login.html';
 		});
 	
 </script>
@@ -50,6 +61,9 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td nowrap><a id="signUpButton" href="javascript:void(0)">Sign Up</a></td>
+		<td nowrap>
+			<a id="signUpButton" href="javascript:void(0)">Sign Up</a>&nbsp;
+			<a id="backButton" href="javascript:void(0)">Back</a>
+		</td>
 	</tr>
 </table>
