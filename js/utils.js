@@ -1,7 +1,6 @@
 // Sign up at http://cocoafish.com and create an app.
 // Insert your Cocoafish app API key here.
-//var sdk = new Cocoafish('<insert api key here>');
-var sdk = new Cocoafish('vw1G7wq6KTKd52m76XwjvoiIgxeHxcXG');
+var sdk = new Cocoafish('<insert api key here>');
 var userId;
 
 function loginUser(userLogin, passwd) {
