@@ -5,11 +5,11 @@ var userId;
 
 function loginUser(userLogin, passwd) {
 	$('#container').showLoading();
-	sdk.sendRequest('users/login.json', 'POST', {login:userLogin, password: passwd}, false, function(data) {
-		if(data && data.meta && data.meta.code == 200) {
+	sdk.sendRequest('users/login.json', 'POST', {login:userLogin, password: passwd, suppress_response_codes: true}, false, function(responseData) {
+		if(responseData && responseData.meta && responseData.meta.code == 200) {
 			window.location = 'places.html';
 		} else {
-			alert(data.meta.message);
+			alert(responseData.meta.message);
 			$('#container').hideLoading();
 		}
 	});
@@ -17,8 +17,8 @@ function loginUser(userLogin, passwd) {
 
 function logoutUser() {
 	if(confirm('Are you sure want to logout?')) {
-		sdk.sendRequest('users/logout.json', 'GET', null, false, function(data) {
-			if(data && data.meta && data.meta.code == 200) {
+		sdk.sendRequest('users/logout.json', 'GET', null, false, function(responseData) {
+			if(responseData && responseData.meta && responseData.meta.code == 200) {
 				window.location = 'login.html';
 			}
 		});
@@ -55,7 +55,7 @@ function createUser(email, fName, lName, password, pwd_confirm) {
 
 function testAuthUser(callback, errorCallback, loadingArea) {
 	loadingArea.showLoading();
-	sdk.sendRequest('users/show/me.json', 'GET', null, false, function(data) {
+	sdk.sendRequest('users/show/me.json', 'GET', {suppress_response_codes: true}, false, function(data) {
 		if(data) {
 			if(data.meta) {
 				var meta = data.meta;

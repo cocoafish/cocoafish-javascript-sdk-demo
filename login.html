@@ -35,7 +35,10 @@
 						loginUser(userName, passwd);
 					}
 				});
-				
+				$('#resetButton').click(function() {
+					$('#userName').val('');
+					$('#password').val('');
+				});
 			});
 		</script>
 		
@@ -81,7 +84,7 @@
 							</tr>
 							<tr>
 								<td></td>
-								<td nowrap><a id="loginButton" href="javascript:void(0)">Login</a>&nbsp;&nbsp;<a id="resetButton" href="#">Reset</a></td>
+								<td nowrap><a id="loginButton" href="javascript:void(0)">Login</a>&nbsp;&nbsp;<a id="resetButton" href="javascript:void(0)">Reset</a></td>
 							</tr>
 							<tr>
 								<td align="right" colspan="2">
