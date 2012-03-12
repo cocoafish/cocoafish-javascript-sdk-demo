@@ -5,7 +5,7 @@ var userId;
 
 function loginUser(userLogin, passwd) {
 	$('#container').showLoading();
-	sdk.sendRequest('users/login.json', 'POST', {login:userLogin, password: passwd, suppress_response_codes: true}, false, function(responseData) {
+	sdk.sendRequest('users/login.json', 'POST', {login:userLogin, password: passwd}, function(responseData) {
 		if(responseData && responseData.meta && responseData.meta.code == 200) {
 			window.location = 'places.html';
 		} else {
@@ -17,7 +17,7 @@ function loginUser(userLogin, passwd) {
 
 function logoutUser() {
 	if(confirm('Are you sure want to logout?')) {
-		sdk.sendRequest('users/logout.json', 'GET', null, false, function(responseData) {
+		sdk.sendRequest('users/logout.json', 'GET', null, function(responseData) {
 			if(responseData && responseData.meta && responseData.meta.code == 200) {
 				window.location = 'login.html';
 			}
@@ -44,7 +44,7 @@ function createUser(email, fName, lName, password, pwd_confirm) {
 			password: password, 
 			password_confirmation: pwd_confirm
 	};
-	sdk.sendRequest('users/create.json', 'POST', userData, false, function(data) {
+	sdk.sendRequest('users/create.json', 'POST', userData, function(data) {
 		if(data && data.meta && data.meta.code == 200) {
 			window.location = 'places.html';
 		} else {
@@ -55,7 +55,7 @@ function createUser(email, fName, lName, password, pwd_confirm) {
 
 function testAuthUser(callback, errorCallback, loadingArea) {
 	loadingArea.showLoading();
-	sdk.sendRequest('users/show/me.json', 'GET', {suppress_response_codes: true}, false, function(data) {
+	sdk.sendRequest('users/show/me.json', 'GET', null, function(data) {
 		if(data) {
 			if(data.meta) {
 				var meta = data.meta;
@@ -114,7 +114,7 @@ function dialogLogin(callback) {
 		$('#errorMsg').hide();
 		$('.dialogStyle').showLoading();
 		
-		sdk.sendRequest('users/login.json', 'POST', {login:userName, password: passwd}, false, function(data) {
+		sdk.sendRequest('users/login.json', 'POST', {login:userName, password: passwd}, function(data) {
 			if(data && data.meta && data.meta.code == 200) {
 				userId = data.response.users[0].id;
 				callback();
@@ -131,13 +131,13 @@ function dialogLogin(callback) {
 
 function logoutUser() {
 	$('#container').showLoading();
-	sdk.sendRequest('users/logout.json', 'GET', null, false, function(data) {
+	sdk.sendRequest('users/logout.json', 'GET', null, function(data) {
 		window.location = 'login.html';
 	});
 }
 
 function getPlaces() {
-	sdk.sendRequest('places/search.json', 'GET', null, false, function(data) {
+	sdk.sendRequest('places/search.json', 'GET', null, function(data) {
 		if(data) {
 			if(data.meta) {
 				if(data.meta.code == '200' && data.meta.status == 'ok' && data.meta.method_name == 'searchPlaces') {
@@ -227,7 +227,7 @@ function checkInFormatter(cellvalue, options, rowObject) {
 
 function checkinPlace(placeId) {
 	  if(placeId) {
-		  sdk.sendRequest('checkins/create.json', 'POST', {place_id:placeId}, false, function(data) {
+		  sdk.sendRequest('checkins/create.json', 'POST', {place_id:placeId}, function(data) {
 			  if(data) {
 					if(data.meta) {
 						if(data.meta.code == '200' && data.meta.status == 'ok' && data.meta.method_name == 'createCheckin') {
