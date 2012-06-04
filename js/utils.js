@@ -1,7 +1,47 @@
 // Sign up at http://cocoafish.com and create an app.
 // Insert your Cocoafish app API key here.
 var sdk = new Cocoafish('<insert api key here>');
+
+//use client_id to initialize SDK
+//var sdk = new Cocoafish2('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq');
+
+//use client_id and redirect_uri to initialize SDK. redirect_uri can also be specified when calling
+//sdk.sendAuthRequest and sdk.invalidateTokenRequest.
+var sdk = new Cocoafish2('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq',
+                            'http://localhost/cocoafish-javascript-sdk-demo/connect.html');
+
+sdk.apiBaseURL = 'localhost:3000'
+
 var userId;
+
+//for Cococafish2 only - start
+//These callbacks are used to implement custom mechanism to save/retrieve/clear access tokens
+//If no custom callbacks are implemented Cocoafish2 will do just as the following code does.
+/*
+sdk.saveToken = function(access_token, app_key) {
+    //alert('saveToken called!');
+    com.cocoafish.js.sdk.utils.setCookie(com.cocoafish.constants.accessToken, access_token);
+    com.cocoafish.js.sdk.utils.setCookie(com.cocoafish.constants.appKey, app_key);
+};
+
+sdk.getToken = function() {
+    //alert('getToken called!');
+    return com.cocoafish.js.sdk.utils.getCookie(com.cocoafish.constants.accessToken);
+}
+
+sdk.getAppKey = function() {
+    //alert('getAppKey called!');
+    return com.cocoafish.js.sdk.utils.getCookie(com.cocoafish.constants.appKey);
+}
+
+sdk.clearToken = function() {
+    //alert('clearToken called!');
+    com.cocoafish.js.sdk.utils.setCookie(com.cocoafish.constants.accessToken, '');
+    com.cocoafish.js.sdk.utils.setCookie(com.cocoafish.constants.appKey, '');
+}
+*/
+//for Cocoafish2 only - end
+
 
 function loginUser(userLogin, passwd) {
 	$('#container').showLoading();
@@ -16,13 +56,22 @@ function loginUser(userLogin, passwd) {
 }
 
 function logoutUser() {
-	if(confirm('Are you sure want to logout?')) {
-		sdk.sendRequest('users/logout.json', 'GET', null, function(responseData) {
-			if(responseData && responseData.meta && responseData.meta.code == 200) {
-				window.location = 'login.html';
-			}
-		});
-	}
+    if(sdk instanceof Cocoafish2) {
+        if(confirm('Are you sure want to Disconnect?')) {
+            //Cocoafish2.invalidateTokenRequest() will call clearToken to invalidate the token at client side
+            //redirect_uri can be specified here
+            //sdk.invalidateTokenRequest('http://localhost/cocoafish-javascript-sdk-demo/connect.html');
+            sdk.invalidateTokenRequest();
+        }
+    } else {
+        if(confirm('Are you sure want to logout?')) {
+            sdk.sendRequest('users/logout.json', 'GET', null, function(responseData) {
+                if(responseData && responseData.meta && responseData.meta.code == 200) {
+                    window.location = 'login.html';
+                }
+            });
+        }
+    }
 }
 
 function loadSignUp() {
@@ -129,12 +178,12 @@ function dialogLogin(callback) {
 	}
 }
 
-function logoutUser() {
-	$('#container').showLoading();
-	sdk.sendRequest('users/logout.json', 'GET', null, function(data) {
-		window.location = 'login.html';
-	});
-}
+//function logoutUser() {
+//	$('#container').showLoading();
+//	sdk.sendRequest('users/logout.json', 'GET', null, function(data) {
+//		window.location = 'login.html';
+//	});
+//}
 
 function getPlaces() {
 	sdk.sendRequest('places/search.json', 'GET', null, function(data) {
