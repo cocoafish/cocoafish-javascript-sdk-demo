@@ -44,8 +44,21 @@
 
             $('#loginButton').click(function() {
                 //redirect_uri can be specified here
-                //sdk.sendAuthRequest('http://localhost/cocoafish-javascript-sdk-demo/connect.html');
-                sdk.sendAuthRequest();
+                //sdk.sendAuthRequest({redirectUri:'http://localhost/cocoafish-javascript-sdk-demo/connect.html'});
+
+                var params = {};
+                //params.display = 'iframe';
+                //params.size = {};
+                //params.size.width = 500;
+                //params.size.height = 500;
+                params.cb = function(data) {
+                    alert('user callback for login called!');
+                    window.location = 'connect.html';
+                };
+
+                //sdk.signUpRequest({params:params});
+                sdk.sendAuthRequest({params:params});
+
             });
 
         });

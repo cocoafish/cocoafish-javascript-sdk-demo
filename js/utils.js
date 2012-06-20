@@ -60,8 +60,19 @@ function logoutUser() {
         if(confirm('Are you sure want to Disconnect?')) {
             //Cocoafish2.invalidateTokenRequest() will call clearToken to invalidate the token at client side
             //redirect_uri can be specified here
-            //sdk.invalidateTokenRequest('http://localhost/cocoafish-javascript-sdk-demo/connect.html');
-            sdk.invalidateTokenRequest();
+            //sdk.invalidateTokenRequest({redirectUri:'http://localhost/cocoafish-javascript-sdk-demo/connect.html'});
+
+            var params = {};
+            //params.display = 'hidden';
+            //params.size = {};
+            //params.size.width = 500;
+            //params.size.height = 500;
+            params.cb = function(data) {
+                alert('user callback for logout called!');
+                window.location = 'connect.html';
+            };
+
+            sdk.invalidateTokenRequest({params:params});
         }
     } else {
         if(confirm('Are you sure want to logout?')) {
