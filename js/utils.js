@@ -6,38 +6,39 @@
 //var sdk = new Cocoafish2('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq');
 
 //use client_id and redirect_uri to initialize SDK. redirect_uri can also be specified when calling
-//sdk.sendAuthRequest and sdk.invalidateTokenRequest.
+//sdk.sendAuthRequest, sdk.signUpRequest, and sdk.invalidateTokenRequest.
 var sdk = new Cocoafish2('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq',
     'http://localhost/cocoafish-javascript-sdk-demo/connect.html');
 
+//set apiBaseURL to use API server other than the default
 sdk.apiBaseURL = 'localhost:3000';
+//sdk.authBaseURL = 'staging-1.cocoafish.com:3002';
+//set oauthSecret to use OAuth for app authentication
+//sdk.oauthSecret = 'ZDkLBzlL28ISUngLgjwuUuMdMqF3Jrm5';
+
 
 var userId;
 
 //for Cococafish2 only - start
-//These callbacks are used to implement custom mechanism to save/retrieve/clear access tokens
-//If no custom callbacks are implemented Cocoafish2 will do just as the following code does.
+//These callbacks are used to implement custom mechanism to save/retrieve/clear token information.
 /*
- sdk.saveToken = function(access_token, app_key) {
- //alert('saveToken called!');
- com.cocoafish.js.sdk.utils.setCookie(com.cocoafish.constants.accessToken, access_token);
- com.cocoafish.js.sdk.utils.setCookie(com.cocoafish.constants.appKey, app_key);
+ var pS = Cocoafish2.prototype.saveSession;
+ var gS = Cocoafish2.prototype.getSession;
+ var cS = Cocoafish2.prototype.clearSession;
+
+ sdk.saveSession = function(data) {
+ alert('custom saveSession called!');
+ return pS(data);
  };
 
- sdk.getToken = function() {
- //alert('getToken called!');
- return com.cocoafish.js.sdk.utils.getCookie(com.cocoafish.constants.accessToken);
+ sdk.getSession = function() {
+ alert('custom getSession called!');
+ return gS();
  }
 
- sdk.getAppKey = function() {
- //alert('getAppKey called!');
- return com.cocoafish.js.sdk.utils.getCookie(com.cocoafish.constants.appKey);
- }
-
- sdk.clearToken = function() {
- //alert('clearToken called!');
- com.cocoafish.js.sdk.utils.setCookie(com.cocoafish.constants.accessToken, '');
- com.cocoafish.js.sdk.utils.setCookie(com.cocoafish.constants.appKey, '');
+ sdk.clearSession = function() {
+ alert('custom clearSession called!');
+ cS();
  }
  */
 //for Cocoafish2 only - end
@@ -197,10 +198,10 @@ function dialogLogin(callback) {
 //}
 
 function getPlaces() {
-    sdk.sendRequest('places/search.json', 'GET', null, function(data) {
+    sdk.sendRequest('places/query.json', 'GET', null, function(data) {
         if(data) {
             if(data.meta) {
-                if(data.meta.code == '200' && data.meta.status == 'ok' && data.meta.method_name == 'searchPlaces') {
+                if(data.meta.code == '200' && data.meta.status == 'ok' && data.meta.method_name == 'queryPlaces') {
                     initializeMap(data.response.places);
                     createPlacesGrid(data.response.places);
                 }
