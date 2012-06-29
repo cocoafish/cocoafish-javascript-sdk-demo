@@ -12,6 +12,7 @@ var sdk = new Cocoafish2('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq',
 
 //set apiBaseURL to use API server other than the default
 sdk.apiBaseURL = 'localhost:3000';
+//set authBaseURL to use Authorization Server other than the default
 //sdk.authBaseURL = 'staging-1.cocoafish.com:3002';
 //set oauthSecret to use OAuth for app authentication
 //sdk.oauthSecret = 'ZDkLBzlL28ISUngLgjwuUuMdMqF3Jrm5';
