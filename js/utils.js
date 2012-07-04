@@ -1,31 +1,46 @@
 // Sign up at http://cocoafish.com and create an app.
 // Insert your Cocoafish app API key here.
-//var sdk = new Cocoafish('<insert api key here>');
+//var sdk = new Cocoafish('NIE4y3ax2UnmiWtkpi3Rbr9RChBvit2a');
 
-//use client_id to initialize SDK
-//var sdk = new Cocoafish2('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq');
-
-//use client_id and redirect_uri to initialize SDK. redirect_uri can also be specified when calling
-//sdk.sendAuthRequest, sdk.signUpRequest, and sdk.invalidateTokenRequest.
-var sdk = new Cocoafish2('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq',
-    'http://localhost/cocoafish-javascript-sdk-demo/connect.html');
-
-//set apiBaseURL to use API server other than the default
+/* 
+ * Use OAuth key to initialize SDK
+ */
+var sdk = new Cocoafish('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq');
+//must to indicate 3-legged OAuth will be used and the passed in parameter is an OAuth key
+sdk.useThreeLegged(true);
+//redirectUri can also be specified when calling sdk.sendAuthRequest, sdk.signUpRequest, and sdk.invalidateTokenRequest.
+sdk.redirectUri = 'http://localhost/cocoafish-javascript-sdk-demo/connect.html';
 sdk.apiBaseURL = 'localhost:3000';
-//set authBaseURL to use Authorization Server other than the default
-//sdk.authBaseURL = 'staging-1.cocoafish.com:3002';
-//set oauthSecret to use OAuth for app authentication
-//sdk.oauthSecret = 'ZDkLBzlL28ISUngLgjwuUuMdMqF3Jrm5';
+sdk.oauthSecret = 'ZDkLBzlL28ISUngLgjwuUuMdMqF3Jrm5';
+// sdk.authBaseURL = 'staging-china.cloud.appcelerator.com:3002';
+
+/* 
+ * Use OAuth key and OAuth secret to initialize SDK
+ */
+// var sdk = new Cocoafish('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq','ZDkLBzlL28ISUngLgjwuUuMdMqF3Jrm5');
+// //must to indicate 3-legged OAuth will be used and the passed in parameter is an OAuth key
+// sdk.useThreeLegged(true);
+// //redirectUri can also be specified when calling sdk.sendAuthRequest, sdk.signUpRequest, and sdk.invalidateTokenRequest.
+// sdk.redirectUri = 'http://localhost/cocoafish-javascript-sdk-demo/connect.html';
+// sdk.apiBaseURL = 'localhost:3000';
+
+
+/*
+ * pass in all arguments to initialize SDK
+ */
+// var sdk = new Cocoafish('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq','ZDkLBzlL28ISUngLgjwuUuMdMqF3Jrm5','localhost:3000','localhost:3001','http://localhost/cocoafish-javascript-sdk-demo/connect.html');
+// //must to indicate 3-legged OAuth will be used and the passed in parameter is an OAuth key
+// sdk.useThreeLegged(true);
 
 
 var userId;
 
-//for Cococafish2 only - start
+//for 3-legged OAuth only - start
 //These callbacks are used to implement custom mechanism to save/retrieve/clear token information.
 /*
- var pS = Cocoafish2.prototype.saveSession;
- var gS = Cocoafish2.prototype.getSession;
- var cS = Cocoafish2.prototype.clearSession;
+ var pS = Cocoafish.prototype.saveSession;
+ var gS = Cocoafish.prototype.getSession;
+ var cS = Cocoafish.prototype.clearSession;
 
  sdk.saveSession = function(data) {
  alert('custom saveSession called!');
@@ -42,7 +57,7 @@ var userId;
  cS();
  }
  */
-//for Cocoafish2 only - end
+//for 3-legged OAuth only - end
 
 
 function loginUser(userLogin, passwd) {
@@ -58,9 +73,9 @@ function loginUser(userLogin, passwd) {
 }
 
 function logoutUser() {
-    if(sdk instanceof Cocoafish2) {
+    if(sdk.isThreeLegged()) {
         if(confirm('Are you sure want to Disconnect?')) {
-            //Cocoafish2.invalidateTokenRequest() will call clearToken to invalidate the token at client side
+            //Cocoafish.invalidateTokenRequest() will call clearToken to invalidate the token at client side
             //redirect_uri can be specified here
             //sdk.invalidateTokenRequest({redirectUri:'http://localhost/cocoafish-javascript-sdk-demo/connect.html'});
 
@@ -70,7 +85,7 @@ function logoutUser() {
             //params.size.width = 500;
             //params.size.height = 500;
             params.cb = function(data) {
-                alert('user callback for logout called!');
+                //alert('user callback for logout called!');
                 window.location = 'connect.html';
             };
 
