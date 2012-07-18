@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Appcelerator Cloud Services Javascript SDK Demo: User Login</title>
+    <script type="text/javascript" src="js/jquery/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery.showLoading.js"></script>
+    <!-- <script type="text/javascript" src="http://sdk.cocoafish.com/js/cocoafish-1.2.min.js"></script> -->
+
+    <script type="text/javascript" src="js/cocoafish-1.2.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+
+    <link type="text/css" href="css/cupertino/jquery-ui-1.8.8.custom.css" rel="Stylesheet" />
+    <link type="text/css" href="css/showLoading.css" rel="Stylesheet" />
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            if(sdk.checkStatus()){
+                $('#loggedintable').show();
+            } else {
+                $('#logintable').show();
+            }
+
+            $('#homeButton').button({
+                icons: {
+                    primary: "ui-icon-triangle-1-e",
+                    secondary: "ui-icon-triangle-1-e"
+                }
+            });
+
+            $('#homeButton').click(function() {
+                window.location = 'places.html';
+            });
+
+
+            $('#loginButton').button({
+                icons: {
+                    primary: "ui-icon-triangle-1-e",
+                    secondary: "ui-icon-triangle-1-e"
+                }
+            });
+
+            $('#loginButton').click(function() {
+                //redirect_uri can be specified here
+                //sdk.sendAuthRequest({redirectUri:'http://localhost/cocoafish-javascript-sdk-demo/connect.html'});
+
+                var params = {};
+                params.display = 'popup';
+                //params.size = {};
+                //params.size.width = 500;
+                //params.size.height = 500;
+                params.cb = function(data) {
+                    //alert('user callback for login called!');
+                    window.location = 'connect.html';
+                };
+
+                //sdk.signUpRequest({params:params});
+                sdk.sendAuthRequest({params:params});
+
+            });
+
+        });
+    </script>
+
+    <style type="text/css">
+        body {
+            font-size:12px;
+        }
+
+        .loginFormArea {
+            width:400px;
+            padding:15px;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <table align="center">
+        <tr>
+            <td>
+                <div>
+                    <h2>Welcome to Appcelerator Cloud Services Javascript SDK Demo!</h2>
+                </div>
+                <div id="mainArea" style="text-align: center" class="loginFormArea ui-widget ui-widget-content ui-corner-all">
+                    <table id="loggedintable" style="display: none" align="center" border="0" cellspacing="0" cellpadding="5">
+                        <tr>
+                            <td align="center" colspan="2">You have been logged in successfully!</td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2"><a id="homeButton" href="javascript:void(0)">Check Places</a></td>
+                        </tr>
+                    </table>
+                    <table id="logintable" style="display: none" align="center" border="0" cellspacing="0" cellpadding="5">
+                        <tr>
+                            <td align="center" colspan="2">Click on Login button to continue</td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2"><a id="loginButton" href="javascript:void(0)">Login</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
