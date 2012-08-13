@@ -1,37 +1,34 @@
 // Sign up at http://cocoafish.com and create an app.
 // Insert your Cocoafish app API key here.
-//var sdk = new Cocoafish('NIE4y3ax2UnmiWtkpi3Rbr9RChBvit2a');
+//var sdk = new Cocoafish('<YOUR API Key');
 
 /* 
+ * Below is for using Security Identity Server to authenticate user
  * Use OAuth key to initialize SDK
  */
-var sdk = new Cocoafish('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq');
-//must to indicate 3-legged OAuth will be used and the passed in parameter is an OAuth key
+var sdk = new Cocoafish('<YOUR APP CONSUMER KEY>');
+//must indicate 3-legged OAuth will be used and the passed in parameter is an OAuth key
 sdk.useThreeLegged(true);
-//redirectUri can also be specified when calling sdk.sendAuthRequest, sdk.signUpRequest, and sdk.invalidateTokenRequest.
+//redirectUri can also be specified when calling sdk.sendAuthRequest, sdk.signUpRequest
 sdk.redirectUri = 'http://localhost/cocoafish-javascript-sdk-demo/connect.html';
-sdk.apiBaseURL = 'localhost:3000';
-//sdk.apiBaseURL = 'api-staging.cloud.appcelerator.com';
-sdk.oauthSecret = 'ZDkLBzlL28ISUngLgjwuUuMdMqF3Jrm5';
-sdk.authBaseURL = 'localhost:3001';
-// sdk.authBaseURL = 'security-staging.cloud.appcelerator.com';
+//OAuth secret is optional
+//sdk.oauthSecret = '<YOUR APP CONSUMER SECRET>';
 
 /* 
  * Use OAuth key and OAuth secret to initialize SDK
  */
-// var sdk = new Cocoafish('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq','ZDkLBzlL28ISUngLgjwuUuMdMqF3Jrm5');
-// //must to indicate 3-legged OAuth will be used
+// var sdk = new Cocoafish('<YOUR APP CONSUMER KEY>','<YOUR APP CONSUMER SECRET>');
+// must indicate 3-legged OAuth will be used
 // sdk.useThreeLegged(true);
-// //redirectUri can also be specified when calling sdk.sendAuthRequest, sdk.signUpRequest, and sdk.invalidateTokenRequest.
+// redirectUri can also be specified when calling sdk.sendAuthRequest, sdk.signUpRequest
 // sdk.redirectUri = 'http://localhost/cocoafish-javascript-sdk-demo/connect.html';
-// sdk.apiBaseURL = 'localhost:3000';
 
 
 /*
  * pass in all arguments to initialize SDK
  */
-// var sdk = new Cocoafish('VGJSVgFHs7FaOcgcvMWMAGe6bwNpHBfq','ZDkLBzlL28ISUngLgjwuUuMdMqF3Jrm5','localhost:3000','localhost:3001','http://localhost/cocoafish-javascript-sdk-demo/connect.html');
-// //must to indicate 3-legged OAuth will be used and the passed in parameter is an OAuth key
+// var sdk = new Cocoafish('<YOUR APP CONSUMER KEY>','<YOUR APP CONSUMER SECRET>','api.cloud.appcelerator.com','secure-identity.cloud.appcelerator.com','http://localhost/cocoafish-javascript-sdk-demo/connect.html');
+// must indicate 3-legged OAuth will be used and the passed in parameter is an OAuth key
 // sdk.useThreeLegged(true);
 
 
